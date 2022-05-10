@@ -19,8 +19,8 @@ unionOrNot = "union"
 num <- 20
 type <- unionOrNot
 
-source("TBGP.R")
 source("QQGPmodelOrigin5LevelQQ")
+source("TBGP.R")
 
 
 
