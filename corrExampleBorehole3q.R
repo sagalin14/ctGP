@@ -1,3 +1,5 @@
+sT <- Sys.time()
+
 library(tgp)
 library(DiceKriging)
 library(SLHD)
@@ -20,7 +22,7 @@ num <- 20
 type <- unionOrNot
 
 
-source("QQGPmodelOrigin5LevelQQ")
+
 source("TBGP.R")
 
 
@@ -250,7 +252,16 @@ for(num in numList){
       print(paste0("QQGP has begun."))
       QQGPTime1 <- proc.time()
       set.seed(99999)
-      QQGPfit <- QQGP.ori.model.QQ5level(design = QQGPdata[,1:5], data = QQGPdata, initParam = rep(-1,5))
+      QQGPfit <-
+        QQGP.ori.model(
+          design = QQGPdata[, c(1:5)],
+          data = QQGPdata,
+          initParam = rep(-1, 5),
+          fiRange = GPR,
+          thetaRange = QQGPR,
+          Tmatrix = NULL,
+          nugget = sqrt(.Machine$double.eps)
+        )
       QQGPTime2 <- proc.time()
       QQGPTime2 - TBGPTime1
       ###################
@@ -399,4 +410,5 @@ for(num in numList){
 
 }
 
-
+eT <- Sys.time()
+eT - sT
