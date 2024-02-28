@@ -1,5 +1,3 @@
-sT <- Sys.time()
-
 library(tgp)
 library(DiceKriging)
 library(SLHD)
@@ -7,7 +5,7 @@ library(LVGP)
 library(lhs)
 
 if(.Platform$OS.type == "windows"){
-  pathlink = "C:/Users/SagaLin/Desktop/TBGP"
+  pathlink = "D:/Dropbox/TBGP/"
 } else{
   pathlink = "/Users/SagaLin/Dropbox/RB/TGP"
 }
@@ -22,9 +20,8 @@ num <- 20
 type <- unionOrNot
 
 
-
+source("QQGPmodelOrigin5LevelQQ.R")
 source("TBGP.R")
-
 
 
 
@@ -41,9 +38,9 @@ t3LevelNum <- t.list[[tl]][3]
 
 print(paste0(num, " pts design", ", Level ", t1LevelNum, " ", t2LevelNum, " ", t3LevelNum, " type ", type, " has begun."))
 
-iternum = 5
+iternum = 10
 
-GPR = c(rep(-4.5, 5), rep(-1, 5)) #c(rep(-4, 6), rep(-0.5, 6))
+GPR = c(rep(-4.5, 5), rep(-1, 5))
 QQGPR = c(2*pi/5, 3*pi/5)
 
 
@@ -60,7 +57,7 @@ responseBorehole <- function(xx, t)
   Hu <- xx[3]
   Tl <- xx[4]
   Hl <- levelList[t,2]
-  L  <- levelList[t,3]#xx[5]
+  L  <- levelList[t,3]
   Kw <- xx[5]
   
   frac1 <- 2 * pi * Tu * (Hu-Hl)
@@ -252,16 +249,7 @@ for(num in numList){
       print(paste0("QQGP has begun."))
       QQGPTime1 <- proc.time()
       set.seed(99999)
-      QQGPfit <-
-        QQGP.ori.model(
-          design = QQGPdata[, c(1:5)],
-          data = QQGPdata,
-          initParam = rep(-1, 5),
-          fiRange = GPR,
-          thetaRange = QQGPR,
-          Tmatrix = NULL,
-          nugget = sqrt(.Machine$double.eps)
-        )
+      QQGPfit <- QQGP.ori.model.QQ5level(design = QQGPdata[,1:5], data = QQGPdata, initParam = rep(-1,5))
       QQGPTime2 <- proc.time()
       QQGPTime2 - TBGPTime1
       ###################
@@ -409,6 +397,3 @@ for(num in numList){
 
 
 }
-
-eT <- Sys.time()
-eT - sT
