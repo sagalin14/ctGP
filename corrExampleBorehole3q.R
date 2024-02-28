@@ -20,7 +20,7 @@ num <- 20
 type <- unionOrNot
 
 
-source("QQGPmodelOrigin5LevelQQ.R")
+#source("QQGPmodelOrigin5LevelQQ.R")
 source("TBGP.R")
 
 
